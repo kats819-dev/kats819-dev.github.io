@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Obsidianで開く</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: system-ui, "Yu Gothic UI", sans-serif; margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f6f6f4; color: #222; }
+  @media (prefers-color-scheme: dark) { body { background: #1b1b1b; color: #e6e6e6; } }
+  main { max-width: 32rem; padding: 24px 16px; text-align: center; }
+  a.btn { display: inline-block; margin-top: 12px; padding: 12px 20px; border-radius: 8px; background: #6c31e3; color: #fff; text-decoration: none; }
+  p { line-height: 1.7; }
+  small { opacity: .7; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Obsidianで開く</h1>
+  <p id="msg">Obsidianを開いています…</p>
+  <a id="go" class="btn" href="#">Obsidianで開く</a>
+  <p><small>ブラウザに確認が出たら「開く」を選んでください。ノートの内容は、このページには送られません（開くパスだけを使います）。</small></p>
+</main>
+<script>
+  // 開く先は obsidian:// 固定（クエリの値でスキームは変えない）。Vaultも固定。
+  var VAULT = "KFujii-sync";
+  var file = new URLSearchParams(location.search).get("file");
+  var go = document.getElementById("go"), msg = document.getElementById("msg");
+  if (!file || file.length > 500) {
+    msg.textContent = "開くノートが指定されていません。";
+    go.style.display = "none";
+  } else {
+    var uri = "obsidian://open?vault=" + encodeURIComponent(VAULT) + "&file=" + encodeURIComponent(file);
+    go.href = uri;
+    setTimeout(function () { location.href = uri; }, 300);
+  }
+</script>
+</body>
+</html>
